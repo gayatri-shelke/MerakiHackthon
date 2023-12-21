@@ -5,49 +5,55 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
 
 
 const Login = () => {
   const navigate = useNavigate();
-
   const initialFormData = {
     email: "",
     password: "",
   };
-
   const [formData, setFormData] = useState(initialFormData);
   const [error, setError] = useState("");
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   const handleChange = (e) => {
-
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
   };
-  // navigate("/course")
-
 
   const handleLogin = async () => {
-      navigate("/course")
-
     try {
       const response = await axios.get(
         `https://merd-api.merakilearn.org/developers/login/${formData.email}/${formData.password}`
       );
 
-      if (response.data === 'Invalid email or password. Please try again.') {
-        setError('Invalid email or password. Please try again.');
+      if (response.data === "Invalid email or password. Please try again.") {
+        setError("Invalid email or password. Please try again.");
+        setSnackbarOpen(true);
       } else {
-        console.log('Successfully logged in!');
+        console.log("Successfully logged in!");
+        navigate("/course");
       }
     } catch (error) {
-      setError('Error logging in. Please try again.');
-      console.error('Error logging in', error.response.data);
+      setError("Error logging in. Please try again.");
+      setSnackbarOpen(true);
+      console.error("Error logging in", error.response.data);
     }
+  };
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
   };
 
   return (
@@ -82,7 +88,12 @@ const Login = () => {
             margin="normal"
           />
           {error && (
-            <Typography variant="body2" color="error" align="center" sx={{ marginTop: 1 }}>
+            <Typography
+              variant="body2"
+              color="error"
+              align="center"
+              sx={{ marginTop: 1 }}
+            >
               {error}
             </Typography>
           )}
@@ -90,13 +101,26 @@ const Login = () => {
             Login
           </Button>
           <Typography variant="body2" color="textSecondary" sx={{ marginTop: 2 }}>
-            Don't have an account? <a href="/signup">Sign Up</a>
+            Don't have an account? <Link to="/">Sign Up</Link>
           </Typography>
         </Box>
       </CardContent>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+      >
+        <MuiAlert
+          elevation={6}
+          variant="filled"
+          onClose={handleSnackbarClose}
+          severity="error"
+        >
+          {error}
+        </MuiAlert>
+      </Snackbar>
     </Card>
   );
 };
 
 export default Login;
-

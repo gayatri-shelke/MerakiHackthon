@@ -3,10 +3,15 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
+import { Link } from 'react-router-dom';
+import Container from '@mui/material/Container';
+import CircularProgress from '@mui/material/CircularProgress';
 import axios from 'axios';
 
 const CoursesList = () => {
   const [coursesData, setCoursesData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -15,36 +20,31 @@ const CoursesList = () => {
         setCoursesData(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
-        // You can set an error state here and provide user feedback
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchData();
+    return () => setLoading(true);
   }, []);
 
   const handleVisitCourse = async (course) => {
     try {
-      // Log the data to the console
       console.log('Course Data:', {
         course_name: course.course_title,
         course_url: course.url,
         course_category: course.category,
       });
-
-      // Send a POST request to the backend API with the course data
       await axios.post('https://merd-api.merakilearn.org/developers/courses/resource', {
         course_name: course.course_title,
         course_url: course.url,
         course_category: course.category,
       });
 
-      // Optionally, you can open the course URL in a new tab/window
       window.open(course.url, '_blank');
     } catch (error) {
-      // Log the complete error object
       console.error('Error sending data to the backend:', error);
-
-      // If there is a response in the error object, log it as well
       if (error.response) {
         console.error('Error response from the server:', error.response.data);
       }
@@ -52,52 +52,78 @@ const CoursesList = () => {
   };
 
   return (
-    <div>
-      <Typography variant="h4" style={{ textAlign: 'center', marginTop: '15px' }}>
-        Courses List
-      </Typography>
-      <Grid container spacing={3} style={{ justifyContent: 'center', alignItems: 'center' }}>
-        {coursesData.map((course) => (
-          <Grid item xs={12} sm={6} md={4} key={course.id}>
-            <Card sx={{ margin: '30px', padding: '30px', marginTop: '80px', border: '1px solid #e0e0e0' }}>
-              <CardContent>
-                <div style={{ fontFamily: 'Arial, sans-serif', maxWidth: '600px', margin: 'auto' }}>
-                  <h2 style={{ color: '#333', borderBottom: '3px solid #333', paddingBottom: '10px' }}>
-                    {course.course_title}
-                  </h2>
-                  <p><strong>Category:</strong> {course.category}</p>
-                  <p><strong>Rating:</strong> {course.rating?.toString()}</p>
-                  <p><strong>Enrolled Students:</strong> {course.enrolledStudents}</p>
-                  <p><strong>Reviews:</strong> {course.reviews}</p>
-                  <p><strong>Certificate:</strong> {course.certificate}</p>
-                  <p><strong>Price:</strong> {course.price}</p>
-                  <p style={{ marginTop: '15px' }}>
-                    <a
-                      href={course.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={() => handleVisitCourse(course)}
-                      style={{
-                        display: 'inline-block',
-                        padding: '10px 15px',
-                        backgroundColor: '#007bff',
-                        color: '#fff',
-                        textDecoration: 'none',
-                        borderRadius: '5px',
-                        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-                      }}
-                    >
-                      Visit Course
-                    </a>
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+    <Container maxWidth="xl" sx={{ mb: 20, position: 'relative' }}>
+      {loading && (
+        <CircularProgress
+          size={100} 
+          style={{ position: 'absolute', color:"gray", top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}
+        />
+      )}
+      {!loading && (
+        <>
+          <Typography variant="h4" style={{ textAlign: 'center', marginTop: 100, color: 'white', marginBottom: 50 }}>
+            Suggested Courses List
+          </Typography>
+          <Grid container spacing={3} style={{ justifyContent: 'center', alignItems: 'stretch' }}>
+            {coursesData.map((course) => (
+              <Grid item xs={12} sm={6} md={4} key={course.id}>
+                <Card
+                  sx={{ height: '100%', display: 'flex', flexDirection: 'column', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}
+                >
+                  <CardContent style={{ flex: '1' }}>
+                    <div style={{ fontFamily: 'Arial, sans-serif', maxWidth: '300px', margin: 'auto' }}>
+                      <Typography
+                        variant="h6"
+                        component="div"
+                        style={{ color: '#333', borderBottom: '3px solid #333', paddingBottom: '10px' }}
+                      >
+                        {course.course_title}
+                      </Typography>
+                      <Typography variant="body2" component="p" style={{ marginBottom: '8px', marginTop: '15px' }}>
+                        <strong>Category:</strong> {course.category}
+                      </Typography>
+                      <Typography variant="body2" component="p" style={{ marginBottom: '8px' }}>
+                        <strong>Rating:</strong> {course.rating?.toString()}
+                      </Typography>
+                      <Typography variant="body2" component="p" style={{ marginBottom: '8px' }}>
+                        <strong>Reviews:</strong> {course.reviews}
+                      </Typography>
+                      <Typography variant="body2" component="p" style={{ marginBottom: '8px' }}>
+                     <strong>Enrolled Students:</strong> {course.enrolledStudents}
+                      </Typography>
+                      <Typography variant="body2" component="p" style={{ marginBottom: '8px' }}>
+                        <strong>Certificate:</strong> {course.Certificate}
+                      </Typography>
+                      <Typography variant="body2" component="p" style={{ marginBottom: '8px' }}>
+                        <strong>Price:</strong> {course.Price}
+                      </Typography>
+                    </div>
+                  </CardContent>
+                  <CardContent style={{ alignSelf: 'flex-end' }}>
+                    <Link to={course.url}>
+                      <Button
+                        onClick={() => handleVisitCourse(course)}
+                        variant="contained"
+                        style={{
+                          backgroundColor: '#007bff',
+                          color: '#fff',
+                          borderRadius: '0',
+                          boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+                        }}
+                      >
+                        Visit Course
+                      </Button>
+                    </Link>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
           </Grid>
-        ))}
-      </Grid>
-    </div>
+        </>
+      )}
+    </Container>
   );
 };
 
 export default CoursesList;
+

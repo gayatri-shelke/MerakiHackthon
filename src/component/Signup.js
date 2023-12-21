@@ -12,8 +12,9 @@ import FormControl from "@mui/material/FormControl";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate,Link } from 'react-router-dom';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
   const roleData = [
     { value: "Front-End", role: "Front-End Development" },
@@ -70,7 +71,6 @@ import { useNavigate } from 'react-router-dom';
   ];
   const Signup = () => {
     const navigate = useNavigate();
-
     const initialFormData = {
       name: "",
       email: "",
@@ -87,6 +87,8 @@ import { useNavigate } from 'react-router-dom';
     };
   const [formData, setFormData] = useState(initialFormData);
   const [errors, setErrors] = useState({});
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
   useEffect(() => {
     const storedFormData = JSON.parse(localStorage.getItem("formData"));
@@ -172,21 +174,31 @@ import { useNavigate } from 'react-router-dom';
   };
 
   const handleSubmit = async () => {
-    navigate("/course")
-
     try {
       if (!validateForm()) {
         return;
       }
+     
       const response = await axios.post(
         "https://merd-api.merakilearn.org/developers/create",
         formData
       );
       console.log("Signup successful!", response.data);
+      navigate('/course'); 
+      
     } catch (error) {
-      console.error("Error signing up", error.response.data);
+      console.error("Error signing up", error.response.data.message);
+      setSnackbarMessage(error.response.data.message);
+      setSnackbarOpen(true);
     }
   };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+
 
   const validateForm = () => {
     const newErrors = {};
@@ -194,46 +206,69 @@ import { useNavigate } from 'react-router-dom';
     if (!formData.name) {
       newErrors.name = "Name is required";
     }
-
-    if (!formData.email) {
-      newErrors.email = "Email is required";
-    } else if (
-      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) ||
-      formData.email !== formData.email.toLowerCase()
-    ) {
-      newErrors.email = "Enter a valid email";
+    if (!formData.password) {
+      newErrors.password = "Password is required";
+    } else if (formData.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
     }
-
+  
+    if (!formData.role) {
+      newErrors.role = "Role is required";
+    }
+    
+    if (!formData.experience) {
+      newErrors.experience = "Experience is required";
+    }
+  
+    if (formData.programming_languages.length === 0) {
+      newErrors.programming_languages = "Programming Languages are required";
+    }
+  
+    if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+      newErrors.email = "Enter a valid email address";
+    }
+  
+    if (formData.education === "") {
+      newErrors.education = "Please select your education";
+    }
+    if (!formData.known_framworks || formData.known_framworks.length === 0) {
+      newErrors.known_framworks = "Please select known frameworks";
+    }
+    if (!formData.resonal_language) {
+      newErrors.resonal_language = "Resonal Language is required";
+    }
+    
+    if (formData.intrests.length === 0) {
+      newErrors.intrests = "Select at least one interest";
+    }
+    
     if (formData.skills.length === 0) {
       newErrors.skills = "Skills are required";
     }
-
-    if (formData.intrests.length === 0) {
-      newErrors.intrests = "Interest is required";
-    }
-
     setErrors(newErrors);
-
+  
     return Object.keys(newErrors).length === 0;
   };
 
   return (
     <Card sx={{ maxWidth: 600, margin: "auto", marginTop: 20, mb:20 }}>
+     <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000} // Adjust the duration as needed
+        onClose={handleSnackbarClose}
+      >
+        <MuiAlert
+          elevation={6}
+          variant="filled"
+          onClose={handleSnackbarClose}
+          severity="error"
+        >
+          {snackbarMessage}
+        </MuiAlert>
+      </Snackbar>
       <CardContent>
-      <Box
-      component="form"
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        backgroundColor: "#9BB7D4",
-        padding: "20px",
-        borderRadius: "8px",
-        boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
-      }}
-    >        <Typography variant="h4" style={{ fontFamily: 'cursive', color: 'black', fontWeight: 'bold', textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)',marginBottom:"15px" }}>
-  Signup
-</Typography>
+        <Box component="form" sx={{ display: "flex", flexDirection: "column", alignItems: "center",}}>
+          <Typography variant="h4" sx ={{mb:5}}>Signup</Typography>
           <Grid container justifyContent="center" spacing={3}>
             <Grid item xs={12} sm={8} md={12} lg={12}>
               <TextField
@@ -278,7 +313,6 @@ import { useNavigate } from 'react-router-dom';
                 value={formData.role}
                 onChange={handleChange}
                 error={!!errors.role}
-                helperText={errors.role}
                 fullWidth
                
               >
@@ -303,7 +337,6 @@ import { useNavigate } from 'react-router-dom';
                 value={formData.education}
                 onChange={handleEducationChange}
                 error={!!errors.education}
-                helperText={errors.education}
                 fullWidth
                
               >
@@ -332,7 +365,6 @@ import { useNavigate } from 'react-router-dom';
                   label="Select Skills"
                   sx={{ "&:focus": { outline: "none" } }}
                   error={!!errors.skills}
-                  helperText={errors.skills}
                 >
                   {skillsData.map((skill) => (
                     <MenuItem key={skill.value} value={skill.value}>
@@ -341,6 +373,11 @@ import { useNavigate } from 'react-router-dom';
                   ))}
                 </Select>
               </FormControl>
+              {errors.skills && (
+                <Typography variant="caption" color="red">
+                  {errors.skills}
+                </Typography>
+              )}
             </Grid>
             <Grid item xs={12} sm={8} md={12} lg={12}>
               <FormControl fullWidth>
@@ -364,6 +401,11 @@ import { useNavigate } from 'react-router-dom';
                   ))}
                 </Select>
               </FormControl>
+              {errors.intrests && (
+                <Typography variant="caption" color="red">
+                  {errors.intrests}
+                </Typography>
+              )}
             </Grid>
             <Grid item xs={12} sm={8} md={12} lg={12}>
               <TextField
@@ -374,7 +416,6 @@ import { useNavigate } from 'react-router-dom';
                 value={formData.experience}
                 onChange={handleExperienceChange}
                 error={!!errors.experience}
-                helperText={errors.experience}
                 fullWidth
                
               >
@@ -455,7 +496,6 @@ import { useNavigate } from 'react-router-dom';
                 value={formData.resonal_language}
                 onChange={handleResonalLanguageChange}
                 error={!!errors.resonal_language}
-                helperText={errors.resonal_language}
                 
               />
               {errors.resonal_language && (
@@ -475,10 +515,16 @@ import { useNavigate } from 'react-router-dom';
               />
             </Grid>
             <Grid item xs={12}>
-              <Button variant="contained" onClick={handleSubmit} >
+              <Typography variant="body2" color="textSecondary" sx={{ marginTop: 2 }}>
+                Above information is required for resume creation
+              </Typography>
+              <Button variant="contained" onClick={handleSubmit} fullWidth>
                 Submit
               </Button>
             </Grid>
+            <Typography variant="body2" color="textSecondary" sx={{ marginTop: 2 }}>
+            If you alrday have an account Then <Link to="/login">Login</Link>
+          </Typography>
           </Grid>
         </Box>
       </CardContent>
