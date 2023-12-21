@@ -1,292 +1,471 @@
-// import React from 'react';
-// import { Box, Typography, CircularProgress, Grid } from '@mui/material';
+import React, { useState, useEffect } from "react";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import MenuItem from "@mui/material/MenuItem";
+import TextareaAutosize from "@mui/material/TextareaAutosize";
+import { Typography } from "@mui/material";
+import Select from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import axios from "axios";
 
-// const teamsData = [
-//   {
-//     team_name: 'Team A',
-//     completed_portion: 75,
-//     current_topic: [
-//       { course_name: 'Course 1', module_name: 'Module A' },
-//       { course_name: 'Course 2', module_name: 'Module B' },
-//     ],
-//     Project_solution_submission: [
-//       { is_submitted: true },
-//       { is_submitted: false },
-//     ],
-//   },
-//   {
-//     team_name: 'Team A',
-//     completed_portion: 75,
-//     current_topic: [
-//       { course_name: 'Course 1', module_name: 'Module A' },
-//       { course_name: 'Course 2', module_name: 'Module B' },
-//     ],
-//     Project_solution_submission: [
-//       { is_submitted: true },
-//       { is_submitted: false },
-//     ],
-//   },
-//   // Add more teamsData as needed
-// ];
+  const roleData = [
+    { value: "Front-End", role: "Front-End Development" },
+    { value: "Back-End", role: "Back-End Development" },
+    { value: "Full-Stack", role: "Full-Stack Development" },
+    { value: "DevOps", role: "DevOps" },
+    { value: "cybersecurity", role: "cybersecurity" },
+    { value: "machine-learning", role: "machine-learning" },
+    { value: "artificial-intelligence", role: "artificial-intelligence" },
+    { value: "Data Science", role: "Data Science & Analytics" },
+    { value: "Other (Please specify)", role: "Other (Please specify)" },
+  ];
+  const skillsData = [
+      { value: "python", skill: "Python" },
+      { value: "javascript", skill: "JavaScript" },
+      { value: "java", skill: "Java" },
+      {value:"c",skill:"c"},
+      {value:"c++",skill:"c++"} ,
+      {value:"ruby",skill:"ruby"},
+      {value:"React",skill:"React"},
+      {value:"Nodejs",skill:"Nodejs"},
+      {value:"Angular",skill:"Angular"},
+      {value:"English",skill:"English"},
+      {value:"Kotlin",skill:"Kotlin"},
+      {value:"Typescript",skill:"Typescript"},
+      {value:"PHP",skill:"PHP"},
+      {value: "Other (Please specify)",skill: "Other (Please specify)"}
+  ];
 
-// const TeamsList = () => {
-//   return (
-//     <Box style={{ marginLeft: "7.5%", marginRight: "20%" }}>
-//       <Typography
-//         style={{
-//           fontFamily: 'Amazon Ember',
-//           fontSize: '16px',
-//           fontWeight: 600,
-//           marginTop: '30px',
-//         }}
-//       >
-//         Teams
-//       </Typography>
+  const educationData = [
+    { value: "high-school", label: "High School" },
+    { value: "undergraduate", label: "Undergraduate" },
+    { value: "graduate", label: "Graduate" },
+    { value: "postgraduate", label: "Postgraduate" },
+  ];
 
-//         <Box style={{ marginTop: '20px' }}>
-//         <Grid container spacing={3}>
-//           {teamsData?.map((person, index) => (
-//             <Grid item xs={12} sm={6} md={4} key={index}>
-//               <Box
-//                 style={{
-//                   width: '90%',
-//                   height: '170px',
-//                   border: '1px solid #DEDEDE',
-//                   borderRadius: '5px',
-//                   padding: '10px',
-//                   background: '#fff',
-//                   boxShadow: '0 0 5px rgba(0, 0, 0, 0.1)',
-//                   margin: '5px',
-//                 }}
-//               >
-//                 <Typography
-//                   style={{
-//                     fontSize: '15px',
-//                     fontFamily: 'Amazon Ember',
-//                     lineHeight: '40px',
-//                     fontWeight: '700px',
-//                   }}
-//                 >
-//                   {person?.team_name}
-//                 </Typography>
-//                 <Box display="flex" gap={5}>
-//                   <Box style={{ marginTop: '10px' }}>
-//                     <CircularProgress
-//                       variant="determinate"
-//                       size={17}
-//                       value={person?.completed_portion}
-//                       style={{ color: 'green' }}
-//                     />
-//                     <span
-//                       style={{
-//                         fontSize: '16px',
-//                         marginLeft: '10px',
-//                         fontFamily: 'Amazon Ember',
-//                         marginBottom: '50px',
-//                       }}
-//                     >
-//                       {person?.completed_portion}%
-//                     </span>
-//                   </Box>
-//                 </Box>
-//                 <hr
-//                   style={{
-//                     color: '#DEDEDE',
-//                     border: 'none',
-//                     borderTop: '2px solid #DEDEDE',
-//                   }}
-//                 />
-//                 <Typography
-//                   style={{
-//                     fontSize: '15px',
-//                     fontFamily: 'Amazon Ember',
-//                     lineHeight: '50px',
-//                     fontWeight: '700px',
-//                   }}
-//                 >
-//                   Current Lesson:{' '}
-//                   {person?.current_topic?.map((lessonName, index) => (
-//                     <span key={index}>
-//                       {lessonName.course_name === ''
-//                         ? lessonName.module_name
-//                         : lessonName.course_name}
-//                     </span>
-//                   ))}
-//                 </Typography>
-//                 <Box
-//                   display="flex"
-//                   flexDirection="row"
-//                   alignItems="center"
-//                   gap={1}
-//                 >
-//                   <Typography
-//                     style={{
-//                       fontSize: '15px',
-//                       fontFamily: 'Amazon Ember',
-//                       lineHeight: '35px',
-//                       fontWeight: '700px',
-//                     }}
-//                   >
-//                     Project Status:
-//                   </Typography>
-//                   <div
-//                     style={{
-//                       width: '10px',
-//                       height: '10px',
-//                       borderRadius: '50%',
-//                       backgroundColor:
-//                         person?.Project_solution_submission === null
-//                           ? 'red'
-//                           : person?.Project_solution_submission?.some(
-//                               (projectStatus) => projectStatus.is_submitted
-//                             )
-//                           ? 'green'
-//                           : 'red',
-//                     }}
-//                   />
-//                   <Typography
-//                     style={{
-//                       fontSize: '15px',
-//                       fontFamily: 'Amazon Ember',
-//                       lineHeight: '35px',
-//                       fontWeight: '700px',
-//                     }}
-//                   >
-//                     {person?.Project_solution_submission === null
-//                       ? 'Yet to Submitted'
-//                       : person?.Project_solution_submission?.some(
-//                           (projectStatus) => projectStatus.is_submitted
-//                         )
-//                       ? 'Submitted'
-//                       : 'Yet to Submitted'}
-//                   </Typography>
-//                 </Box>
-//               </Box>
-//             </Grid>
-//           ))}
-//         </Grid>
-//       </Box>
-//     </Box>
-//   );
-// };
+  const experienceData = [
+    { value: "0-1", label: "0-1 years" },
+    { value: "1-3", label: "1-3 years" },
+    { value: "3-5", label: "3-5 years" },
+    { value: "5+", label: "5+ years" },
+  ];
 
-// export default TeamsList;
+  const programmingLanguagesData = [
+    { value: "java", label: "Java" },
+    { value: "javascript", label: "JavaScript" },
+    { value: "python", label: "Python" },
+  ];
 
-import React from "react";
-import { Box, Typography, CircularProgress, Grid } from "@mui/material";
+  const knownFrameworksData = [
+    { value: "react", label: "React" },
+    { value: "angular", label: "Angular" },
+    { value: "express", label: "Express.js" },
+  ];
+  const Signup = () => {
+    const initialFormData = {
+      name: "",
+      email: "",
+      password: "",
+      role: "",
+      education: "",
+      intrests:[],
+      skills: [], 
+      experience: "",
+      programming_languages: [],
+      known_framworks: [],
+      resonal_language: "",
+      learning_plan: "", 
+    };
+  const [formData, setFormData] = useState(initialFormData);
+  const [errors, setErrors] = useState({});
 
-// Assume you have an array of profile image URLs
-const profileImages = [
-  "url_to_image_1",
-  "url_to_image_2",
-  // ... add more image URLs as needed
-];
+  useEffect(() => {
+    const storedFormData = JSON.parse(localStorage.getItem("formData"));
+    if (storedFormData) {
+      setFormData(storedFormData);
+    }
+  }, []);
 
-const teamsData = [
-  {
-    team_name: "Gayatri",
-    completed_portion: 75,
-    current_topic: [
-      { course_name: "Course 1", module_name: "Module A" },
-      { course_name: "Course 2", module_name: "Module B" },
-    ],
-    Project_solution_submission: [
-      { is_submitted: true },
-      { is_submitted: false },
-    ],
-  },
-  {
-    team_name: "Apeksha",
-    completed_portion: 60,
-    current_topic: [
-      { course_name: "Course 3", module_name: "Module C" },
-      { course_name: "Course 4", module_name: "Module D" },
-    ],
-    Project_solution_submission: [
-      { is_submitted: false },
-      { is_submitted: true },
-    ],
-  },
-  {
-    team_name: "prem",
-    completed_portion: 60,
-    current_topic: [
-      { course_name: "Course 3", module_name: "Module C" },
-      { course_name: "Course 4", module_name: "Module D" },
-    ],
-    Project_solution_submission: [
-      { is_submitted: false },
-      { is_submitted: true },
-    ],
-  },
-  // Add more teamsData as needed
-];
+  useEffect(() => {
+    localStorage.setItem("formData", JSON.stringify(formData));
+  }, [formData]);
 
-const TeamsList = () => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+    setErrors((prevErrors) => ({ ...prevErrors, [name]: "" }));
+  };
+
+  const handleEducationChange = (e) => {
+    const { value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      education: value,
+    }));
+    setErrors((prevErrors) => ({ ...prevErrors, education: "" }));
+  };
+
+  const handleKnownFrameworksChange = (e) => {
+    const { value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      known_framworks: [value],
+    }));
+    setErrors((prevErrors) => ({ ...prevErrors, known_framworks: "" }));
+  };
+
+  const handleExperienceChange = (e) => {
+    const { value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      experience: value,
+    }));
+    setErrors((prevErrors) => ({ ...prevErrors, experience: "" }));
+  };
+
+  const handleProgrammingLanguagesChange = (e) => {
+    const { value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      programming_languages: value,
+    }));
+    setErrors((prevErrors) => ({ ...prevErrors, programming_languages: "" }));
+  };
+
+  const handleResonalLanguageChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+    setErrors((prevErrors) => ({ ...prevErrors, resonal_language: "" }));
+  };
+
+  const handleSkillsChange = (e) => {
+    const { value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      skills: value,
+    }));
+    setErrors((prevErrors) => ({ ...prevErrors, skills: "" }));
+  };
+
+  const handleInterest = (e) => {
+    const { value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      intrests: value,
+    }));
+    setErrors((prevErrors) => ({ ...prevErrors, intrests: "" }));
+  };
+
+  const handleSubmit = async () => {
+    try {
+      if (!validateForm()) {
+        return;
+      }
+      const response = await axios.post(
+        "https://merd-api.merakilearn.org/developers/create",
+        formData
+      );
+      console.log("Signup successful!", response.data);
+    } catch (error) {
+      console.error("Error signing up", error.response.data);
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    if (!formData.name) {
+      newErrors.name = "Name is required";
+    }
+
+    if (!formData.email) {
+      newErrors.email = "Email is required";
+    } else if (
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) ||
+      formData.email !== formData.email.toLowerCase()
+    ) {
+      newErrors.email = "Enter a valid email";
+    }
+
+    if (formData.skills.length === 0) {
+      newErrors.skills = "Skills are required";
+    }
+
+    if (formData.intrests.length === 0) {
+      newErrors.intrests = "Interest is required";
+    }
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
+  };
+
   return (
-    <Box style={{ marginLeft: "7.5%", marginRight: "20%" }}>
-      <Typography variant="h5" style={{ textAlign: 'center',marginTop:"15px" }}>
-        Student Profile
-      </Typography> 
-
-      <Grid container spacing={3}>
-        {teamsData?.map((team, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index}>
-            <Box
-               style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                marginBottom: "20px",
-              }}
-            >
-              <img
-                src="data:image/jpeg;base64,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"
-                // alt="StudentProfile"
-                style={{
-                  height: "60px",
-                  width: "60px",
-                  borderRadius: "60px",
-                  marginTop: "10px",
-                  backgroundColor: "red",
-                }}
+    <Card sx={{ maxWidth: 600, margin: "auto", marginTop: 20, mb:20 }}>
+      <CardContent>
+        <Box component="form" sx={{ display: "flex", flexDirection: "column", alignItems: "center",}}>
+          <Typography variant="h4">Signup</Typography>
+          <Grid container justifyContent="center" spacing={3}>
+            <Grid item xs={12} sm={8} md={12} lg={12}>
+              <TextField
+                label="Name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                error={!!errors.name}
+                helperText={errors.name}
+                fullWidth
               />
-            </Box>
-
-            {/* Team Card */}
-            <Box
-              style={{
-                width: "90%",
-                height: "170px",
-                border: "1px solid #DEDEDE",
-                borderRadius: "5px",
-                padding: "10px",
-                background: "#fff",
-                boxShadow: "0 0 5px rgba(0, 0, 0, 0.1)",
-                margin: "5px",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center", // Center content vertically
-              }}
-            >
-              {/* Rest of the team information */}
-              <Typography
-                style={{
-                  fontSize: "15px",
-                  fontFamily: "Amazon Ember",
-                  lineHeight: "40px",
-                  fontWeight: "700px",
-                }}
+            </Grid>
+            <Grid item xs={12} sm={8} md={12} lg={12}>
+              <TextField
+                label="Email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                error={!!errors.email}
+                helperText={errors.email}
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12} sm={8} md={12} lg={12}>
+              <TextField
+                label="Password"
+                name="password"
+                type="password"
+                value={formData.password}
+                onChange={handleChange}
+                error={!!errors.password}
+                helperText={errors.password}
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={12} sm={8} md={12} lg={12}>
+              <TextField
+                name="role"
+                select
+                label="Select role"
+                variant="outlined" 
+                value={formData.role}
+                onChange={handleChange}
+                error={!!errors.role}
+                helperText={errors.role}
+                fullWidth
+               
               >
-                {team?.team_name}
-              </Typography>
-              {/* ... (rest of the team information) */}
-            </Box>
+                {roleData.map((selectrole) => (
+                  <MenuItem key={selectrole.value} value={selectrole.value}>
+                    {selectrole.role}
+                  </MenuItem>
+                ))}
+              </TextField>
+              {errors.role && (
+                <Typography variant="caption" color="red">
+                  {errors.role}
+                </Typography>
+              )}
+            </Grid>
+            <Grid item xs={12} sm={8} md={12} lg={12}>
+              <TextField
+                name="education"
+                select
+                label="Select Education"
+                variant="outlined" 
+                value={formData.education}
+                onChange={handleEducationChange}
+                error={!!errors.education}
+                helperText={errors.education}
+                fullWidth
+               
+              >
+                {educationData.map((education) => (
+                  <MenuItem key={education.value} value={education.value}>
+                    {education.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+              {errors.education && (
+                <Typography variant="caption" color="red">
+                  {errors.education}
+                </Typography>
+              )}
+            </Grid>
+            <Grid item xs={12} sm={8} md={12} lg={12}>
+              <FormControl fullWidth>
+                <InputLabel id="skills-label">Skills</InputLabel>
+                <Select
+                  labelId="skills-label"
+                  id="skills"
+                  name="skills"
+                  multiple
+                  value={formData.skills}
+                  onChange={handleSkillsChange}
+                  label="Select Skills"
+                  sx={{ "&:focus": { outline: "none" } }}
+                  error={!!errors.skills}
+                  helperText={errors.skills}
+                >
+                  {skillsData.map((skill) => (
+                    <MenuItem key={skill.value} value={skill.value}>
+                      {skill.skill}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={8} md={12} lg={12}>
+              <FormControl fullWidth>
+                <InputLabel id="interest-label">Interest</InputLabel>
+                <Select
+                  labelId="interest-label"
+                  id="interest"
+                  name="Interest"
+                  multiple
+                  value={formData.intrests}
+                  onChange={handleInterest}
+                  label="Select Interest"
+                  sx={{ "&:focus": { outline: "none" } }}
+                  error={!!errors.intrests}
+                  helperText={errors.intrests}
+                >
+                  {skillsData.map((intrests) => (
+                    <MenuItem key={intrests.value} value={intrests.value}>
+                      {intrests.skill}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={8} md={12} lg={12}>
+              <TextField
+                name="experience"
+                select
+                label="Select Experience"
+                variant="outlined" 
+                value={formData.experience}
+                onChange={handleExperienceChange}
+                error={!!errors.experience}
+                helperText={errors.experience}
+                fullWidth
+               
+              >
+                {experienceData.map((experience) => (
+                  <MenuItem key={experience.value} value={experience.value}>
+                    {experience.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+              {errors.experience && (
+                <Typography variant="caption" color="red">
+                  {errors.experience}
+                </Typography>
+              )}
+            </Grid>
+            <Grid item xs={12} sm={8} md={12} lg={12}>
+              <FormControl fullWidth>
+                <InputLabel id="programming-languages-label">Programming Languages</InputLabel>
+                <Select
+                  labelId="programming-languages-label"
+                  id="programming-languages"
+                  name="programming_languages"
+                  multiple
+                  value={formData.programming_languages}
+                  onChange={handleProgrammingLanguagesChange}
+                  label="Select Programming Languages"
+                  sx={{ "&:focus": { outline: "none" } }}
+                  error={!!errors.programming_languages}
+                  helperText={errors.programming_languages}
+                >
+                  {programmingLanguagesData.map((language) => (
+                    <MenuItem key={language.value} value={language.value}>
+                      {language.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              {errors.programming_languages && (
+                <Typography variant="caption" color="red">
+                  {errors.programming_languages}
+                </Typography>
+              )}
+            </Grid>
+            <Grid item xs={12} sm={8} md={12} lg={12}>
+              <FormControl fullWidth>
+                <InputLabel id="known-frameworks-label">Known Frameworks</InputLabel>
+                <Select
+                  labelId="known-frameworks-label"
+                  id="known-frameworks"
+                  name="known_framworks"
+                  value={formData.known_framworks[0] || ""}
+                  onChange={handleKnownFrameworksChange}
+                  label="Select Known Frameworks"
+                  sx={{ "&:focus": { outline: "none" } }}
+                  error={!!errors.known_framworks}
+                  helperText={errors.known_framworks}
+                >
+                  {knownFrameworksData.map((framework) => (
+                    <MenuItem key={framework.value} value={framework.value}>
+                      {framework.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              {errors.known_framworks && (
+                <Typography variant="caption" color="red">
+                  {errors.known_framworks}
+                </Typography>
+              )}
+            </Grid>
+            <Grid item xs={12} sm={8} md={12} lg={12}>
+              <TextField
+                name="resonal_language"
+                label="Resonal Language"
+                variant="outlined"
+                placeholder="Enter your resonal language"
+                fullWidth
+                value={formData.resonal_language}
+                onChange={handleResonalLanguageChange}
+                error={!!errors.resonal_language}
+                helperText={errors.resonal_language}
+                
+              />
+              {errors.resonal_language && (
+                <Typography variant="caption" color="red">
+                  {errors.resonal_language}
+                </Typography>
+              )}
+            </Grid>
+            <Grid item xs={12}>
+              <label>Your learning_plan summary</label>
+              <TextareaAutosize
+                name="learning_plan"
+                placeholder="Type anything…"
+                style={{ width: "100%", minHeight: "130px", marginTop: "8px" }}
+                value={formData.learning_plan}
+                onChange={handleChange}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Button variant="contained" onClick={handleSubmit} fullWidth>
+                Submit
+              </Button>
+            </Grid>
           </Grid>
-        ))}
-      </Grid>
-    </Box>
+        </Box>
+      </CardContent>
+    </Card>
   );
 };
+export default Signup;
 
-export default TeamsList;
