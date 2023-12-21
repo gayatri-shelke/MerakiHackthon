@@ -7,9 +7,9 @@ import Course from './component/Course'
 function App() {
   return (
     <div className="App">
-     {/* <Login/> */}
+     <Login/>
      {/* <Signup/> */}
-     <Course/>
+     {/* <Course/> */}
     </div>
   );
 }
