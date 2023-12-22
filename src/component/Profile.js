@@ -1,16 +1,10 @@
 import React from "react";
-import { Box, Typography, CircularProgress, Grid } from "@mui/material";
+import { Box, Typography, CircularProgress, Grid,Card, CardContent } from "@mui/material";
 
-// Assume you have an array of profile image URLs
-const profileImages = [
-  "url_to_image_1",
-  "url_to_image_2",
-  // ... add more image URLs as needed
-];
 
 const teamsData = [
   {
-    team_name: "Gayatri",
+    team_name: "Prem",
     completed_portion: 75,
     current_topic: [
       { course_name: "Course 1", module_name: "Module A" },
@@ -21,43 +15,18 @@ const teamsData = [
       { is_submitted: false },
     ],
   },
-  {
-    team_name: "Apeksha",
-    completed_portion: 60,
-    current_topic: [
-      { course_name: "Course 3", module_name: "Module C" },
-      { course_name: "Course 4", module_name: "Module D" },
-    ],
-    Project_solution_submission: [
-      { is_submitted: false },
-      { is_submitted: true },
-    ],
-  },
-  {
-    team_name: "prem",
-    completed_portion: 60,
-    current_topic: [
-      { course_name: "Course 3", module_name: "Module C" },
-      { course_name: "Course 4", module_name: "Module D" },
-    ],
-    Project_solution_submission: [
-      { is_submitted: false },
-      { is_submitted: true },
-    ],
-  },
+ 
 ];
 
 const Profile = () => {
   return (
-    <Box style={{ marginLeft: "7.5%", marginRight: "20%" }}>
-      <Typography variant="h5" style={{ textAlign: 'center',marginTop:"15px" }}>
+    <Box style={{ display: "flex", flexDirection: "column", alignItems: "center", height: "100vh" }}>
+      
+      <Typography variant="h5" style={{ textAlign: 'center',marginTop:"80px",color:"white" }}>
         Student Progress
       </Typography> 
 
-      <Grid container spacing={3}>
-        {teamsData?.map((team, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index}>
-            <Box
+     <Box
                style={{
                 display: "flex",
                 justifyContent: "center",
@@ -79,39 +48,54 @@ const Profile = () => {
             </Box>
 
             {/* Team Card */}
-            <Box
-              style={{
-                width: "90%",
-                height: "170px",
-                border: "1px solid #DEDEDE",
-                borderRadius: "5px",
-                padding: "10px",
-                background: "#fff",
-                boxShadow: "0 0 5px rgba(0, 0, 0, 0.1)",
-                margin: "5px",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center", // Center content vertically
-              }}
-            >
-              {/* Rest of the team information */}
-              <Typography
-                style={{
-                  fontSize: "15px",
-                  fontFamily: "Amazon Ember",
-                  lineHeight: "40px",
-                  fontWeight: "700px",
-                }}
-              >
-                {team?.team_name}
-              </Typography>
-              {/* ... (rest of the team information) */}
-            </Box>
-          </Grid>
-        ))}
-      </Grid>
+            <Card style={{ width: "90%", maxWidth: 600 }}>
+        <CardContent>
+          <Box
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              marginBottom: "20px",
+            }}
+          >
+            <Typography variant="h6">{teamsData[0]?.team_name}</Typography>
+          </Box>
+
+          {/* Team Card */}
+          <Box
+            style={{
+              border: "1px solid #DEDEDE",
+              borderRadius: "5px",
+              padding: "10px",
+              background: "#fff",
+              boxShadow: "0 0 5px rgba(0, 0, 0, 0.1)",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center", // Center content vertically
+            }}
+          >
+            {/* Rest of the team information */}
+            <Typography style={{ fontSize: "15px", fontFamily: "Amazon Ember", lineHeight: "40px", fontWeight: "700px" }}>
+              Completed Portion: {teamsData[0]?.completed_portion}%
+            </Typography>
+            <Typography style={{ fontSize: "15px", fontFamily: "Amazon Ember", lineHeight: "40px", fontWeight: "700px" }}>
+              Current Topics:{" "}
+              {teamsData[0]?.current_topic.map((topic) => `${topic.course_name} - ${topic.module_name}`).join(", ")}
+            </Typography>
+            <Typography style={{ fontSize: "15px", fontFamily: "Amazon Ember", lineHeight: "40px", fontWeight: "700px" }}>
+              Project Solution Submission:{" "}
+              {teamsData[0]?.Project_solution_submission[0].is_submitted ? "Submitted" : "Not Submitted"}
+            </Typography>
+            {/* ... (you can add more information as needed) */}
+          </Box>
+        </CardContent>
+      </Card>
+              
+         
     </Box>
   );
 };
 
 export default Profile;
+
+

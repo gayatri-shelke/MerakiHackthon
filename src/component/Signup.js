@@ -12,6 +12,8 @@ import FormControl from "@mui/material/FormControl";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
+
 
   const roleData = [
     { value: "Front-End", role: "Front-End Development" },
@@ -67,6 +69,8 @@ import axios from "axios";
     { value: "express", label: "Express.js" },
   ];
   const Signup = () => {
+    const navigate = useNavigate();
+
     const initialFormData = {
       name: "",
       email: "",
@@ -168,6 +172,8 @@ import axios from "axios";
   };
 
   const handleSubmit = async () => {
+    navigate("/course")
+
     try {
       if (!validateForm()) {
         return;
@@ -214,8 +220,20 @@ import axios from "axios";
   return (
     <Card sx={{ maxWidth: 600, margin: "auto", marginTop: 20, mb:20 }}>
       <CardContent>
-        <Box component="form" sx={{ display: "flex", flexDirection: "column", alignItems: "center",}}>
-          <Typography variant="h4">Signup</Typography>
+      <Box
+      component="form"
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        backgroundColor: "#9BB7D4",
+        padding: "20px",
+        borderRadius: "8px",
+        boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+      }}
+    >        <Typography variant="h4" style={{ fontFamily: 'cursive', color: 'black', fontWeight: 'bold', textShadow: '2px 2px 4px rgba(0, 0, 0, 0.3)',marginBottom:"15px" }}>
+  Signup
+</Typography>
           <Grid container justifyContent="center" spacing={3}>
             <Grid item xs={12} sm={8} md={12} lg={12}>
               <TextField
@@ -457,7 +475,7 @@ import axios from "axios";
               />
             </Grid>
             <Grid item xs={12}>
-              <Button variant="contained" onClick={handleSubmit} fullWidth>
+              <Button variant="contained" onClick={handleSubmit} >
                 Submit
               </Button>
             </Grid>

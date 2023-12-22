@@ -6,8 +6,12 @@ import Typography from "@mui/material/Typography";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import axios from "axios";
+import { useNavigate } from 'react-router-dom';
+
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const initialFormData = {
     email: "",
     password: "",
@@ -17,14 +21,19 @@ const Login = () => {
   const [error, setError] = useState("");
 
   const handleChange = (e) => {
+
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
   };
+  // navigate("/course")
+
 
   const handleLogin = async () => {
+      navigate("/course")
+
     try {
       const response = await axios.get(
         `https://merd-api.merakilearn.org/developers/login/${formData.email}/${formData.password}`

@@ -19,7 +19,7 @@ const Footer = () => {
       }}
     >
       <Typography variant="body2" sx={{ fontSize: "14px" }}>
-        &copy; 2023 Your Company. All rights reserved.
+        &copy; 2023 @Abhyas. All rights reserved.
       </Typography>
       <Typography variant="body2" sx={{ fontSize: "12px", marginTop: "5px" }}>
         Made with ❤️ by Our Team
