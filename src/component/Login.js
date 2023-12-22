@@ -39,8 +39,11 @@ const Login = () => {
         setError("Invalid email or password. Please try again.");
         setSnackbarOpen(true);
       } else {
-        console.log("Successfully logged in!");
+        const userId = response.data.id;
+        localStorage.setItem("userId", userId);
+        console.log("Successfully logged in 1233456", userId);
         navigate("/course");
+        
       }
     } catch (error) {
       setError("Error logging in. Please try again.");

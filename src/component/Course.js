@@ -12,12 +12,14 @@ import axios from 'axios';
 const CoursesList = () => {
   const [coursesData, setCoursesData] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const userId = localStorage.getItem("userId");
+  // console.log("User ID from localStorage ", userId);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://merd-api.merakilearn.org/developers/recommended/courses/2');
+        const response = await axios.get(`https://merd-api.merakilearn.org/developers/recommended/courses/${userId}`);
         setCoursesData(response.data);
+        console.log('Courses API Response:', response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -27,7 +29,7 @@ const CoursesList = () => {
 
     fetchData();
     return () => setLoading(true);
-  }, []);
+  }, [userId]);
 
   const handleVisitCourse = async (course) => {
     try {

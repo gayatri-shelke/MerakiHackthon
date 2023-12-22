@@ -10,11 +10,14 @@ import {
 const Profile = () => {
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const userId = localStorage.getItem("userId");
+  // console.log("User ID from localStorage profile", userId);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://merd-api.merakilearn.org/developers/2/profile"
+          `https://merd-api.merakilearn.org/developers/${userId}/profile`
         );
         const data = await response.json();
         setProfileData(data);
@@ -25,7 +28,7 @@ const Profile = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [userId]);
   return (
     <Box
       style={{

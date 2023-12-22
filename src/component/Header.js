@@ -1,16 +1,8 @@
-
-
-
 import React,{useState} from "react";
-// import AppBar from "@mui/material/AppBar";
-// import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
-// import Avatar from "@mui/material/Avatar";
 import { AppBar, Toolbar, IconButton, Avatar, Menu, MenuItem } from "@mui/material";
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { useNavigate } from 'react-router-dom';
-
 
 const Header = () => {
   const navigate = useNavigate();
@@ -36,7 +28,7 @@ const Header = () => {
   return (
     <AppBar position="fixed" sx={{ backgroundColor: "#172035" }}>
         <Toolbar>
-          <Typography variant="h6" style={{ color: "#ffffff",textAlign: 'center'}}> Wel Come To Abhyas</Typography>
+          <Typography variant="h6" style={{ color: "#ffffff",textAlign: 'center'}}> Welcome To Abhyas</Typography>
           <div style={{ marginLeft: 'auto' }}>
             <IconButton
               size="large"
