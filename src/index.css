@@ -1,8 +1,18 @@
-body{
+/* body{
   background-image: url("/src/mmm.jpg");
   background-repeat: no-repeat;
   background-size: contain;
   height: 100;
   background-size: cover;
+} */
+
+body{
+  background: #8aaec6;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #FFFFFF, #b5e7f9, #7c9bb0);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #FFFFFF, #5bb2d1, #beddf1); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  
 }
+
+
+
 

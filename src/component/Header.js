@@ -26,7 +26,13 @@ const Header = () => {
   };
 
   return (
-    <AppBar position="fixed" sx={{ backgroundColor: "#172035" }}>
+    <AppBar position="fixed" sx={{
+      //  backgroundColor: "#172035" 
+      background: '#005AA7',
+      background: '-webkit-linear-gradient(to bottom, #FFFDE4, #005AA7)',
+      background: 'linear-gradient(to bottom, #FFFDE4, #005AA7)',
+
+    }}>
         <Toolbar>
           <Typography variant="h6" style={{ color: "#ffffff",textAlign: 'center'}}> Welcome To Abhyas</Typography>
           <div style={{ marginLeft: 'auto' }}>
