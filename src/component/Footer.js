@@ -8,10 +8,10 @@ const Footer = () => {
       component="footer"
       sx={{
         // backgroundColor: "#222",
-        background: '#005AA7',  
-        background: '-webkit-linear-gradient(to bottom, #FFFDE4, #005AA7)', 
-        background: 'linear-gradient(to bottom, #FFFDE4, #005AA7)', 
-
+        // background: '#005AA7',  
+        // background: '-webkit-linear-gradient(to bottom, #FFFDE4, #005AA7)', 
+        // background: 'linear-gradient(to bottom, #FFFDE4, #005AA7)', 
+background:"black",
         color: "white",
         textAlign: "center",
         padding: "20px",

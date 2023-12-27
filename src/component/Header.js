@@ -20,6 +20,8 @@ const Header = () => {
     setAnchorEl(null);
   };
   const handleCloseLogout = () => {
+    localStorage.clear()
+
     navigate("/login")
 
     setAnchorEl(null);
@@ -28,9 +30,10 @@ const Header = () => {
   return (
     <AppBar position="fixed" sx={{
       //  backgroundColor: "#172035" 
-      background: '#005AA7',
-      background: '-webkit-linear-gradient(to bottom, #FFFDE4, #005AA7)',
-      background: 'linear-gradient(to bottom, #FFFDE4, #005AA7)',
+      // background: '#005AA7',
+      // background: '-webkit-linear-gradient(to bottom, #FFFDE4, #005AA7)',
+      // background: 'linear-gradient(to bottom, #FFFDE4, #005AA7)',
+      background:"black",
 
     }}>
         <Toolbar>
