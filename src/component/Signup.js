@@ -185,7 +185,6 @@ import MuiAlert from '@mui/material/Alert';
       );
       const userId = response.data.id; 
       localStorage.setItem("userId", userId);
-      console.log("Signup successful!", response.data);
       navigate('/course'); 
       
     } catch (error) {

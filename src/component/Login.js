@@ -41,7 +41,6 @@ const Login = () => {
       } else {
         const userId = response.data.id;
         localStorage.setItem("userId", userId);
-        console.log("Successfully logged in 1233456", userId);
         navigate("/course");
         
       }

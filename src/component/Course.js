@@ -14,31 +14,18 @@ const CoursesList = () => {
   const [loading, setLoading] = useState(true);
 
   const userId = localStorage.getItem("userId");
-  // console.log("User ID from localStorage ", userId);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let coursesData = JSON.parse(
-          localStorage.getItem("coursesData"),
-          null,
-          2
-        );
-        if (coursesData == null) {
-          const response = await axios.get(
-            `https://merd-api.merakilearn.org/developers/recommended/courses/${userId}`
-          );
-          const setAnchor = localStorage.setItem(
-            "coursesData",
-            JSON.stringify(response.data)
-          );
-          setCoursesData(response.data);
+        let storedCoursesData = JSON.parse(localStorage.getItem("coursesData"));
 
-          console.log("Courses API Response:", response.data);
-        } else {
-          console.log(coursesData, "courses");
-
-          setCoursesData(coursesData);
+        if (!storedCoursesData) {
+          const response = await axios.get(`https://merd-api.merakilearn.org/developers/recommended/courses/${userId}`);
+          storedCoursesData = response.data;
+          localStorage.setItem("coursesData", JSON.stringify(storedCoursesData));
         }
+
+        setCoursesData(storedCoursesData);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -47,16 +34,11 @@ const CoursesList = () => {
     };
 
     fetchData();
-    return () => setLoading(true);
   }, [userId]);
 
   const handleVisitCourse = async (course) => {
     try {
-      console.log("Course Data:", {
-        course_name: course.course_title,
-        course_url: course.url,
-        course_category: course.category,
-      });
+     
       await axios.post(
         "https://merd-api.merakilearn.org/developers/courses/resource",
         {

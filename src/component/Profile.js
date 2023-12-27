@@ -11,7 +11,6 @@ const Profile = () => {
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
   const userId = localStorage.getItem("userId");
-  // console.log("User ID from localStorage profile", userId);
 
   useEffect(() => {
     const fetchData = async () => {
